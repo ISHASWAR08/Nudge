@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Onboarding.css";
@@ -138,7 +140,8 @@ function Question({ number, text, children }) {
 /* ── MAIN COMPONENT ───────────────────────────────────────── */
  
 export default function Onboarding({ onComplete }) {
-  const navigate = useNavigate ? useNavigate() : null;
+  const navigate = useNavigate();
+  const { setUserData } = useContext(UserContext);
  
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
@@ -162,8 +165,20 @@ export default function Onboarding({ onComplete }) {
     answers.buildLevel && answers.learnStyle && answers.struggle;
  
   const handleFinish = () => {
-    if (onComplete) onComplete(answers);
-    if (navigate) navigate("/assessment", { state: { answers } });
+    setUserData({
+    role: answers.role,
+    companyType: answers.companyType,
+    timeline: answers.timeline,
+    buildLevel: answers.buildLevel,
+    learnStyle: answers.learnStyle,
+    struggle: answers.struggle,
+    skills: {}
+  });
+
+
+  if (onComplete) onComplete(answers);
+
+  navigate("/assessment");
   };
  
   return (
