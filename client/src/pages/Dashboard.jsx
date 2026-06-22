@@ -1,4 +1,7 @@
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 function Dashboard() {
+  const { userData } = useContext(UserContext);
   return (
     <div>
       <h1>Nudge Dashboard</h1>
