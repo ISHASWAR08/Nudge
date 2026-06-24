@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/Onboarding.css";
  
 /* ── DATA ─────────────────────────────────────────────────── */
@@ -15,51 +16,38 @@ const ROLES = [
 ];
  
 const COMPANY_TYPES = [
-  {
-    id: "startup",
-    label: "Startup",
-    sub: "Fast building, versatile skills",
-  },
-  {
-    id: "faang",
-    label: "Product Company / FAANG",
-    sub: "Strong DSA + projects + system thinking",
-  },
-  {
-    id: "service",
-    label: "Service Based",
-    sub: "Strong fundamentals + interview preparation",
-  },
+  { id: "startup", label: "Startup", sub: "Fast building, versatile skills" },
+  { id: "faang",   label: "Product Company / FAANG", sub: "Strong DSA + projects + system thinking" },
+  { id: "service", label: "Service Based", sub: "Strong fundamentals + interview preparation" },
 ];
  
 const TIMELINES = [
-  { id: "3m",  label: "3 months" },
-  { id: "6m",  label: "6 months" },
-  { id: "1y",  label: "1 year+" },
+  { id: "3m", label: "3 months" },
+  { id: "6m", label: "6 months" },
+  { id: "1y", label: "1 year+" },
 ];
  
 const BUILD_LEVELS = [
-  { id: "learning", label: "Just learning",      sub: "Haven't shipped anything yet" },
+  { id: "learning", label: "Just learning",       sub: "Haven't shipped anything yet" },
   { id: "small",    label: "Built small projects", sub: "Personal / tutorial projects" },
-  { id: "shipped",  label: "Shipped projects",    sub: "Real users or live deployments" },
+  { id: "shipped",  label: "Shipped projects",     sub: "Real users or live deployments" },
 ];
  
 const LEARN_STYLES = [
-  { id: "tutorials",    label: "Tutorials / Courses" },
-  { id: "building",     label: "Building Projects" },
-  { id: "docs",         label: "Documentation" },
-  { id: "mentorship",   label: "Mentorship" },
+  { id: "tutorials",  label: "Tutorials / Courses" },
+  { id: "building",   label: "Building Projects" },
+  { id: "docs",       label: "Documentation" },
+  { id: "mentorship", label: "Mentorship" },
 ];
  
 const STRUGGLES = [
-  { id: "what_next",    label: "I don't know what to learn next" },
-  { id: "no_build",     label: "I learn but don't build" },
-  { id: "job_ready",    label: "I don't know if I am job ready" },
-  { id: "consistency",  label: "I lack consistency" },
-  { id: "interviews",   label: "I struggle with interviews" },
+  { id: "what_next",   label: "I don't know what to learn next" },
+  { id: "no_build",    label: "I learn but don't build" },
+  { id: "job_ready",   label: "I don't know if I am job ready" },
+  { id: "consistency", label: "I lack consistency" },
+  { id: "interviews",  label: "I struggle with interviews" },
 ];
  
-/* ── TOTAL QUESTIONS (for progress bar) ─────────────────── */
 const TOTAL_Q = 6;
  
 /* ── HELPERS ─────────────────────────────────────────────── */
@@ -74,13 +62,35 @@ function answeredCount(answers) {
     answers.struggle,
   ].filter(Boolean).length;
 }
+
+/* ── ROLE LABEL MAP ──────────────────────────────────────── */
+const ROLE_LABELS = {
+  frontend:  "Frontend Developer",
+  backend:   "Backend Developer",
+  fullstack: "Full Stack Developer",
+  data:      "Data Scientist",
+  aiml:      "AI / ML Engineer",
+  mobile:    "Mobile Developer",
+  other:     "Developer",
+};
+
+const COMPANY_LABELS = {
+  startup: "Startup",
+  faang:   "Product Company / FAANG",
+  service: "Service Based",
+};
+
+const TIMELINE_LABELS = {
+  "3m": "3 months",
+  "6m": "6 months",
+  "1y": "1 year+",
+};
  
 /* ── SUB-COMPONENTS ───────────────────────────────────────── */
  
 function ProgressBar({ step, answers }) {
   const filled = answeredCount(answers);
   const pct = Math.round((filled / TOTAL_Q) * 100);
- 
   return (
     <div className="ob-progress">
       <div className="ob-progress__meta">
@@ -88,10 +98,7 @@ function ProgressBar({ step, answers }) {
         <span className="ob-progress__pct">{pct}% complete</span>
       </div>
       <div className="ob-progress__track">
-        <div
-          className="ob-progress__fill"
-          style={{ width: `${pct}%` }}
-        />
+        <div className="ob-progress__fill" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
@@ -104,9 +111,7 @@ function SelectCard({ label, sub, selected, onClick }) {
       className={`ob-card${selected ? " ob-card--active" : ""}`}
       onClick={onClick}
     >
-      <span className="ob-card__check" aria-hidden="true">
-        {selected ? "✓" : ""}
-      </span>
+      <span className="ob-card__check" aria-hidden="true">{selected ? "✓" : ""}</span>
       <span className="ob-card__label">{label}</span>
       {sub && <span className="ob-card__sub">{sub}</span>}
     </button>
@@ -138,8 +143,9 @@ function Question({ number, text, children }) {
 /* ── MAIN COMPONENT ───────────────────────────────────────── */
  
 export default function Onboarding({ onComplete }) {
-  const navigate = useNavigate ? useNavigate() : null;
- 
+  const navigate = useNavigate();
+  const { setUserData } = useUser(); // ← reads from UserContext
+
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
     role:        null,
@@ -153,23 +159,26 @@ export default function Onboarding({ onComplete }) {
   const set = (key, value) =>
     setAnswers((prev) => ({ ...prev, [key]: value }));
  
-  /* step 1 requires all 3 answered */
-  const step1Done =
-    answers.role && answers.companyType && answers.timeline;
- 
-  /* step 2 requires all 3 answered */
-  const step2Done =
-    answers.buildLevel && answers.learnStyle && answers.struggle;
+  const step1Done = answers.role && answers.companyType && answers.timeline;
+  const step2Done = answers.buildLevel && answers.learnStyle && answers.struggle;
  
   const handleFinish = () => {
+    // Save into UserContext so Dashboard can read it
+    setUserData({
+      role:        ROLE_LABELS[answers.role] || answers.role,
+      companyType: COMPANY_LABELS[answers.companyType] || answers.companyType,
+      timeline:    TIMELINE_LABELS[answers.timeline] || answers.timeline,
+      buildLevel:  answers.buildLevel,
+      learnStyle:  answers.learnStyle,
+      struggle:    answers.struggle,
+    });
+
     if (onComplete) onComplete(answers);
-    if (navigate) navigate("/assessment", { state: { answers } });
+    navigate("/dashboard");
   };
  
   return (
     <div className="ob-page">
- 
-      {/* NAV */}
       <nav className="ob-nav">
         <div className="ob-logo">
           <span className="ob-logo__dot" />
@@ -177,12 +186,9 @@ export default function Onboarding({ onComplete }) {
         </div>
       </nav>
  
-      {/* PROGRESS */}
       <ProgressBar step={step} answers={answers} />
  
-      {/* FORM AREA */}
       <main className="ob-main">
- 
         {step === 1 && (
           <div className="ob-step">
             <div className="ob-step__header">
@@ -241,9 +247,7 @@ export default function Onboarding({ onComplete }) {
                 Continue →
               </button>
               {!step1Done && (
-                <p className="ob-actions__hint">
-                  Answer all 3 questions to continue
-                </p>
+                <p className="ob-actions__hint">Answer all 3 questions to continue</p>
               )}
             </div>
           </div>
@@ -299,10 +303,7 @@ export default function Onboarding({ onComplete }) {
             </Question>
  
             <div className="ob-actions">
-              <button
-                className="ob-btn ob-btn--ghost"
-                onClick={() => setStep(1)}
-              >
+              <button className="ob-btn ob-btn--ghost" onClick={() => setStep(1)}>
                 ← Back
               </button>
               <button
@@ -314,13 +315,10 @@ export default function Onboarding({ onComplete }) {
               </button>
             </div>
             {!step2Done && (
-              <p className="ob-actions__hint">
-                Answer all 3 questions to continue
-              </p>
+              <p className="ob-actions__hint">Answer all 3 questions to continue</p>
             )}
           </div>
         )}
- 
       </main>
     </div>
   );

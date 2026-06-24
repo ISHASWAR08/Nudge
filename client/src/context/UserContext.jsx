@@ -1,9 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useContext } from "react";
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-
   const [userData, setUserData] = useState({
     role: "",
     companyType: "",
@@ -16,4 +15,8 @@ export function UserProvider({ children }) {
       {children}
     </UserContext.Provider>
   );
+}
+
+export function useUser() {
+  return useContext(UserContext);
 }
