@@ -1,7 +1,11 @@
+import { useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 import { useState, useEffect } from 'react';
 import '../styles/Roadmap.css';
 
 export default function Roadmap() {
+  const { userData } = useContext(UserContext);
+  console.log("ROADMAP USERDATA:", userData);
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -9,18 +13,23 @@ export default function Roadmap() {
   useEffect(() => {
     const fetchRoadmap = async () => {
       try {
-        const payload = {
-          role: 'Frontend Developer',
-          timeline: '3 Months',
-          skills: {
-            html: 4,
-            css: 3,
-            javascript: 2,
-            react: 1
-          }
-        };
+       console.log("USER DATA:", userData);
 
-        const response = await fetch('http://localhost:5000/api/roadmap', {
+const payload = {
+  role: userData.role,
+  timeline: userData.timeline,
+  skills: {
+    html: 4,
+    css: 4,
+    javascript: 3
+  }
+};
+
+console.log("PAYLOAD:", payload);  
+
+        
+
+        const response = await fetch("http://localhost:5000/api/roadmap/generate", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

@@ -1,11 +1,10 @@
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
 import "../styles/Onboarding.css";
- 
+
 /* ── DATA ─────────────────────────────────────────────────── */
- 
+
 const ROLES = [
   { id: "frontend",  label: "Frontend Developer" },
   { id: "backend",   label: "Backend Developer" },
@@ -15,57 +14,44 @@ const ROLES = [
   { id: "mobile",    label: "Mobile Developer" },
   { id: "other",     label: "Other" },
 ];
- 
+
 const COMPANY_TYPES = [
-  {
-    id: "startup",
-    label: "Startup",
-    sub: "Fast building, versatile skills",
-  },
-  {
-    id: "faang",
-    label: "Product Company / FAANG",
-    sub: "Strong DSA + projects + system thinking",
-  },
-  {
-    id: "service",
-    label: "Service Based",
-    sub: "Strong fundamentals + interview preparation",
-  },
+  { id: "startup", label: "Startup", sub: "Fast building, versatile skills" },
+  { id: "faang",   label: "Product Company / FAANG", sub: "Strong DSA + projects + system thinking" },
+  { id: "service", label: "Service Based", sub: "Strong fundamentals + interview preparation" },
 ];
- 
+
 const TIMELINES = [
-  { id: "3m",  label: "3 months" },
-  { id: "6m",  label: "6 months" },
-  { id: "1y",  label: "1 year+" },
+  { id: "3m", label: "3 months" },
+  { id: "6m", label: "6 months" },
+  { id: "1y", label: "1 year+" },
 ];
- 
+
 const BUILD_LEVELS = [
-  { id: "learning", label: "Just learning",      sub: "Haven't shipped anything yet" },
+  { id: "learning", label: "Just learning",       sub: "Haven't shipped anything yet" },
   { id: "small",    label: "Built small projects", sub: "Personal / tutorial projects" },
-  { id: "shipped",  label: "Shipped projects",    sub: "Real users or live deployments" },
+  { id: "shipped",  label: "Shipped projects",     sub: "Real users or live deployments" },
 ];
- 
+
 const LEARN_STYLES = [
-  { id: "tutorials",    label: "Tutorials / Courses" },
-  { id: "building",     label: "Building Projects" },
-  { id: "docs",         label: "Documentation" },
-  { id: "mentorship",   label: "Mentorship" },
+  { id: "tutorials",  label: "Tutorials / Courses" },
+  { id: "building",   label: "Building Projects" },
+  { id: "docs",       label: "Documentation" },
+  { id: "mentorship", label: "Mentorship" },
 ];
- 
+
 const STRUGGLES = [
-  { id: "what_next",    label: "I don't know what to learn next" },
-  { id: "no_build",     label: "I learn but don't build" },
-  { id: "job_ready",    label: "I don't know if I am job ready" },
-  { id: "consistency",  label: "I lack consistency" },
-  { id: "interviews",   label: "I struggle with interviews" },
+  { id: "what_next",   label: "I don't know what to learn next" },
+  { id: "no_build",    label: "I learn but don't build" },
+  { id: "job_ready",   label: "I don't know if I am job ready" },
+  { id: "consistency", label: "I lack consistency" },
+  { id: "interviews",  label: "I struggle with interviews" },
 ];
- 
-/* ── TOTAL QUESTIONS (for progress bar) ─────────────────── */
+
 const TOTAL_Q = 6;
- 
+
 /* ── HELPERS ─────────────────────────────────────────────── */
- 
+
 function answeredCount(answers) {
   return [
     answers.role,
@@ -76,13 +62,35 @@ function answeredCount(answers) {
     answers.struggle,
   ].filter(Boolean).length;
 }
- 
+
+/* ── LABEL MAPS ──────────────────────────────────────────── */
+const ROLE_LABELS = {
+  frontend:  "Frontend Developer",
+  backend:   "Backend Developer",
+  fullstack: "Full Stack Developer",
+  data:      "Data Scientist",
+  aiml:      "AI / ML Engineer",
+  mobile:    "Mobile Developer",
+  other:     "Developer",
+};
+
+const COMPANY_LABELS = {
+  startup: "Startup",
+  faang:   "Product Company / FAANG",
+  service: "Service Based",
+};
+
+const TIMELINE_LABELS = {
+  "3m": "3 months",
+  "6m": "6 months",
+  "1y": "1 year+",
+};
+
 /* ── SUB-COMPONENTS ───────────────────────────────────────── */
- 
+
 function ProgressBar({ step, answers }) {
   const filled = answeredCount(answers);
   const pct = Math.round((filled / TOTAL_Q) * 100);
- 
   return (
     <div className="ob-progress">
       <div className="ob-progress__meta">
@@ -90,15 +98,12 @@ function ProgressBar({ step, answers }) {
         <span className="ob-progress__pct">{pct}% complete</span>
       </div>
       <div className="ob-progress__track">
-        <div
-          className="ob-progress__fill"
-          style={{ width: `${pct}%` }}
-        />
+        <div className="ob-progress__fill" style={{ width: `${pct}%` }} />
       </div>
     </div>
   );
 }
- 
+
 function SelectCard({ label, sub, selected, onClick }) {
   return (
     <button
@@ -106,15 +111,13 @@ function SelectCard({ label, sub, selected, onClick }) {
       className={`ob-card${selected ? " ob-card--active" : ""}`}
       onClick={onClick}
     >
-      <span className="ob-card__check" aria-hidden="true">
-        {selected ? "✓" : ""}
-      </span>
+      <span className="ob-card__check" aria-hidden="true">{selected ? "✓" : ""}</span>
       <span className="ob-card__label">{label}</span>
       {sub && <span className="ob-card__sub">{sub}</span>}
     </button>
   );
 }
- 
+
 function PillCard({ label, selected, onClick }) {
   return (
     <button
@@ -126,7 +129,7 @@ function PillCard({ label, selected, onClick }) {
     </button>
   );
 }
- 
+
 function Question({ number, text, children }) {
   return (
     <div className="ob-question">
@@ -136,13 +139,13 @@ function Question({ number, text, children }) {
     </div>
   );
 }
- 
+
 /* ── MAIN COMPONENT ───────────────────────────────────────── */
- 
+
 export default function Onboarding({ onComplete }) {
   const navigate = useNavigate();
-  const { setUserData } = useContext(UserContext);
- 
+  const { setUserData } = useUser();
+
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
     role:        null,
@@ -152,52 +155,39 @@ export default function Onboarding({ onComplete }) {
     learnStyle:  null,
     struggle:    null,
   });
- 
+
   const set = (key, value) =>
     setAnswers((prev) => ({ ...prev, [key]: value }));
- 
-  /* step 1 requires all 3 answered */
-  const step1Done =
-    answers.role && answers.companyType && answers.timeline;
- 
-  /* step 2 requires all 3 answered */
-  const step2Done =
-    answers.buildLevel && answers.learnStyle && answers.struggle;
- 
+
+  const step1Done = answers.role && answers.companyType && answers.timeline;
+  const step2Done = answers.buildLevel && answers.learnStyle && answers.struggle;
+
   const handleFinish = () => {
     setUserData({
-    role: answers.role,
-    companyType: answers.companyType,
-    timeline: answers.timeline,
-    buildLevel: answers.buildLevel,
-    learnStyle: answers.learnStyle,
-    struggle: answers.struggle,
-    skills: {}
-  });
+      role:        ROLE_LABELS[answers.role] || answers.role,
+      companyType: COMPANY_LABELS[answers.companyType] || answers.companyType,
+      timeline:    TIMELINE_LABELS[answers.timeline] || answers.timeline,
+      buildLevel:  answers.buildLevel,
+      learnStyle:  answers.learnStyle,
+      struggle:    answers.struggle,
+    });
 
-
-  if (onComplete) onComplete(answers);
-
-  navigate("/assessment");
+    if (onComplete) onComplete(answers);
+    navigate("/dashboard");
   };
- 
+
   return (
     <div className="ob-page">
- 
-      {/* NAV */}
       <nav className="ob-nav">
         <div className="ob-logo">
           <span className="ob-logo__dot" />
           Nudge
         </div>
       </nav>
- 
-      {/* PROGRESS */}
+
       <ProgressBar step={step} answers={answers} />
- 
-      {/* FORM AREA */}
+
       <main className="ob-main">
- 
         {step === 1 && (
           <div className="ob-step">
             <div className="ob-step__header">
@@ -206,7 +196,7 @@ export default function Onboarding({ onComplete }) {
                 Let's reverse-engineer<br />your path to hired.
               </h1>
             </div>
- 
+
             <Question number={1} text="What role are you targeting?">
               <div className="ob-grid ob-grid--roles">
                 {ROLES.map((r) => (
@@ -219,7 +209,7 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <Question number={2} text="What type of company are you aiming for?">
               <div className="ob-grid ob-grid--company">
                 {COMPANY_TYPES.map((c) => (
@@ -233,7 +223,7 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <Question number={3} text="When do you want to be ready?">
               <div className="ob-grid ob-grid--pills">
                 {TIMELINES.map((t) => (
@@ -246,7 +236,7 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <div className="ob-actions">
               <button
                 className="ob-btn ob-btn--primary"
@@ -256,14 +246,12 @@ export default function Onboarding({ onComplete }) {
                 Continue →
               </button>
               {!step1Done && (
-                <p className="ob-actions__hint">
-                  Answer all 3 questions to continue
-                </p>
+                <p className="ob-actions__hint">Answer all 3 questions to continue</p>
               )}
             </div>
           </div>
         )}
- 
+
         {step === 2 && (
           <div className="ob-step">
             <div className="ob-step__header">
@@ -272,7 +260,7 @@ export default function Onboarding({ onComplete }) {
                 Now let's see where<br />you actually stand.
               </h1>
             </div>
- 
+
             <Question number={4} text="How much have you built?">
               <div className="ob-grid ob-grid--company">
                 {BUILD_LEVELS.map((b) => (
@@ -286,7 +274,7 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <Question number={5} text="How do you usually learn?">
               <div className="ob-grid ob-grid--pills">
                 {LEARN_STYLES.map((l) => (
@@ -299,7 +287,7 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <Question number={6} text="What's your biggest struggle right now?">
               <div className="ob-grid ob-grid--struggles">
                 {STRUGGLES.map((s) => (
@@ -312,12 +300,9 @@ export default function Onboarding({ onComplete }) {
                 ))}
               </div>
             </Question>
- 
+
             <div className="ob-actions">
-              <button
-                className="ob-btn ob-btn--ghost"
-                onClick={() => setStep(1)}
-              >
+              <button className="ob-btn ob-btn--ghost" onClick={() => setStep(1)}>
                 ← Back
               </button>
               <button
@@ -329,13 +314,10 @@ export default function Onboarding({ onComplete }) {
               </button>
             </div>
             {!step2Done && (
-              <p className="ob-actions__hint">
-                Answer all 3 questions to continue
-              </p>
+              <p className="ob-actions__hint">Answer all 3 questions to continue</p>
             )}
           </div>
         )}
- 
       </main>
     </div>
   );
