@@ -351,18 +351,3 @@ button { cursor: pointer; border: none; background: none; font: inherit; }
   .score-row { grid-template-columns: 1fr; }
   .dash-header { flex-direction: column; gap: 12px; }
 }
-.roadmap-btn {
-  margin-top: 20px;
-  padding: 12px 24px;
-  background: #F5A623;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 15px;
-}
-
-.roadmap-btn:hover {
-  opacity: 0.9;
-}

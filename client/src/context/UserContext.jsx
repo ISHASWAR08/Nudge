@@ -3,20 +3,12 @@ import { createContext, useState, useContext } from "react";
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-  const [userData, setUserData] = useState(() => {
-  const saved = localStorage.getItem("userData");
-  return saved
-    ? JSON.parse(saved)
-    : {
-        role: "",
-        companyType: "",
-        timeline: "",
-        buildLevel: "",
-        learnStyle: "",
-        struggle: "",
-        skills: {}
-      };
-});
+  const [userData, setUserData] = useState({
+    role: "",
+    companyType: "",
+    timeline: "",
+    skills: {}
+  });
 
   return (
    <UserContext.Provider

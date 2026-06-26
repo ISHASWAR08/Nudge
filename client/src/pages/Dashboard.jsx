@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { useUser } from "../context/UserContext";
 import "./Dashboard.css";
@@ -191,7 +190,6 @@ function SkillGaps({ gaps }) {
 
 /* ── Dashboard ────────────────────────────────────────────── */
 export default function Dashboard() {
-  const navigate = useNavigate();
   const { userData } = useUser();
   const user = buildUserFromContext(userData) || MOCK_USER;
   const [nudgeDismissed, setNudgeDismissed] = useState(false);
@@ -242,19 +240,11 @@ export default function Dashboard() {
 
         <div className="score-row">
           <div className="score-card">
-  <ReadinessRing score={user.readiness} />
-
-  <p className="score-card__desc">
-    You're <strong>{user.readiness}% ready</strong> for a {user.role} role at a {user.company}.
-  </p>
-
-  <button
-    className="roadmap-btn"
-   onClick={() => navigate("/roadmap")}
-  >
-    View My Roadmap →
-  </button>
-</div>
+            <ReadinessRing score={user.readiness} />
+            <p className="score-card__desc">
+              You're <strong>{user.readiness}% ready</strong> for a {user.role} role at a {user.company}.
+            </p>
+          </div>
           <PhasePill phase={user.phase} />
         </div>
 
