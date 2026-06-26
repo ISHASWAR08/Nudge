@@ -11,7 +11,15 @@ export function UserProvider({ children }) {
   });
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+   <UserContext.Provider
+  value={{
+    userData,
+    setUserData: (data) => {
+      localStorage.setItem("userData", JSON.stringify(data));
+      setUserData(data);
+    }
+  }}
+>
       {children}
     </UserContext.Provider>
   );

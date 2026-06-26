@@ -33,20 +33,18 @@ function Assessment() {
 
   const handleSubmit = () => {
 
-
-    setUserData({
-
-      ...userData,
-
-      skills: skills
-
-    });
-
-
-    navigate("/dashboard");
-
+  const updatedData = {
+    ...userData,
+    skills: skills
   };
 
+  console.log("SAVING:", updatedData);
+
+  setUserData(updatedData);
+
+  navigate("/dashboard");
+
+};
 
 
   return (
