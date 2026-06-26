@@ -25,7 +25,7 @@ router.post("/generate", async (req, res) => {
     timeline
 });
 
-
+console.log("ROADMAP RESPONSE:", roadmap);
         res.json({
 
             success: true,

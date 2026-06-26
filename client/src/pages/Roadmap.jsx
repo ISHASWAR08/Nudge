@@ -12,6 +12,9 @@ export default function Roadmap() {
 
   useEffect(() => {
     const fetchRoadmap = async () => {
+      if (!userData.role) {
+      return;
+    }
       try {
        console.log("USER DATA:", userData);
 
@@ -42,7 +45,11 @@ console.log("PAYLOAD:", payload);
         }
 
         const data = await response.json();
-        setRoadmapData(data);
+        setRoadmapData({
+  ...data.data,
+  roadmap: data.data.roadmap || data.data.steps || [],
+  projects: data.data.projects || []
+});
         setError(null);
       } catch (err) {
         setError(err.message || 'Failed to fetch roadmap');
@@ -53,7 +60,7 @@ console.log("PAYLOAD:", payload);
     };
 
     fetchRoadmap();
-  }, []);
+  }, [userData]);
 
   if (loading) {
     return (

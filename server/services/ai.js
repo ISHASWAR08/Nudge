@@ -87,15 +87,33 @@ function generateFallbackRoadmap(data){
 
     return {
 
-        title:`Roadmap for ${data.careerGoal}`,
+        readinessScore: 45,
 
-        steps:[
+        phase: "Learning",
 
-            `Improve ${data.skills} fundamentals`,
+        roadmap:[
 
-            `Build projects related to ${data.careerGoal}`,
+            {
+                item:`Learn ${data.skills} fundamentals`,
+                status:"current"
+            },
 
-            `Create portfolio and prepare for opportunities`
+            {
+                item:`Build ${data.careerGoal} projects`,
+                status:"locked"
+            },
+
+            {
+                item:"Create portfolio and prepare interviews",
+                status:"locked"
+            }
+
+        ],
+
+        projects:[
+
+            `Build a ${data.careerGoal} project`,
+            "Deploy project online"
 
         ],
 

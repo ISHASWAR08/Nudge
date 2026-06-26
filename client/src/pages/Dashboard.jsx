@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "./Dashboard.css";
 
@@ -190,6 +191,7 @@ function SkillGaps({ gaps }) {
 
 /* ── Dashboard ────────────────────────────────────────────── */
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { userData } = useUser();
   const user = buildUserFromContext(userData) || MOCK_USER;
   const [nudgeDismissed, setNudgeDismissed] = useState(false);
@@ -200,17 +202,24 @@ export default function Dashboard() {
         <div className="sidebar__brand">Nudge</div>
         <nav className="sidebar__nav">
           {[
-            { icon: "⊞", label: "Dashboard", active: true },
-            { icon: "🗺", label: "Roadmap" },
-            { icon: "✅", label: "Milestones" },
-            { icon: "📊", label: "Progress" },
-          ].map(({ icon, label, active }) => (
-            <a key={label} href="#"
-              className={`sidebar__link ${active ? "sidebar__link--active" : ""}`}>
-              <span className="sidebar__link-icon">{icon}</span>
-              {label}
-            </a>
-          ))}
+  { icon: "⊞", label: "Dashboard", active: true },
+  { icon: "🗺", label: "Roadmap", path: "/roadmap" },
+  { icon: "✅", label: "Milestones" },
+  { icon: "📊", label: "Progress" },
+].map(({ icon, label, active, path }) => (
+  <a
+    key={label}
+    href="#"
+    onClick={(e) => {
+      e.preventDefault();
+      if (path) navigate(path);
+    }}
+    className={`sidebar__link ${active ? "sidebar__link--active" : ""}`}
+  >
+    <span className="sidebar__link-icon">{icon}</span>
+    {label}
+  </a>
+))}
         </nav>
         <div className="sidebar__goal">
           <p className="sidebar__goal-label">Your Goal</p>

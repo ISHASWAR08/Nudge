@@ -172,7 +172,7 @@ export default function Onboarding({ onComplete }) {
       learnStyle: answers.learnStyle,
       struggle: answers.struggle,
     };
-
+    setUserData(userData);
 
     try {
 
@@ -211,7 +211,7 @@ export default function Onboarding({ onComplete }) {
     } catch(error){
 
       console.error("Roadmap generation failed:", error);
-
+      console.log("SAVING USER DATA:", userData);
       setUserData(userData);
 
     }
