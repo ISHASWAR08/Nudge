@@ -18,7 +18,7 @@ async function generateRoadmap(userData){
 Create a personalized roadmap.
 
 Goal:
-${userData.careerGoal}
+${userData.role}node index.js
 
 Skills:
 ${Array.isArray(userData.skills) 
