@@ -162,19 +162,66 @@ export default function Onboarding({ onComplete }) {
   const step1Done = answers.role && answers.companyType && answers.timeline;
   const step2Done = answers.buildLevel && answers.learnStyle && answers.struggle;
 
-  const handleFinish = () => {
-    setUserData({
-      role:        ROLE_LABELS[answers.role] || answers.role,
+  const handleFinish = async () => {
+
+    const userData = {
+      role: ROLE_LABELS[answers.role] || answers.role,
       companyType: COMPANY_LABELS[answers.companyType] || answers.companyType,
-      timeline:    TIMELINE_LABELS[answers.timeline] || answers.timeline,
-      buildLevel:  answers.buildLevel,
-      learnStyle:  answers.learnStyle,
-      struggle:    answers.struggle,
-    });
+      timeline: TIMELINE_LABELS[answers.timeline] || answers.timeline,
+      buildLevel: answers.buildLevel,
+      learnStyle: answers.learnStyle,
+      struggle: answers.struggle,
+    };
+
+
+    try {
+
+      const response = await fetch(
+        "http://localhost:5000/api/roadmap/generate",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+
+            skills: userData.role,
+            careerGoal: userData.role,
+            level: userData.buildLevel
+
+          })
+        }
+      );
+
+
+      const roadmapResponse = await response.json();
+
+
+      setUserData({
+
+        ...userData,
+
+        roadmap: roadmapResponse.data
+
+      });
+
+
+    } catch(error){
+
+      console.error("Roadmap generation failed:", error);
+
+      setUserData(userData);
+
+    }
+
 
     if (onComplete) onComplete(answers);
+
     navigate("/dashboard");
-  };
+
+};
 
   return (
     <div className="ob-page">
