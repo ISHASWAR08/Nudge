@@ -534,3 +534,56 @@ body {
     font-size: 12px;
   }
 }
+@media (max-width: 768px) {
+
+  .roadmap-container {
+    padding: 12px;
+  }
+
+
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+
+  .header-text h2 {
+    font-size: 24px;
+  }
+
+
+  .readiness-card,
+  .phase-card,
+  .roadmap-section,
+  .projects-section {
+    padding: 18px;
+    width: 100%;
+  }
+
+
+  .score-circle {
+    margin: 20px auto;
+  }
+
+
+  .roadmap-timeline {
+    padding-left: 0;
+  }
+
+
+  .roadmap-item {
+    width: 100%;
+  }
+
+
+  .projects-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+
+  .project-card {
+    width: 100%;
+  }
+
+}

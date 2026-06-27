@@ -378,4 +378,82 @@ button { font-family: inherit; cursor: pointer; }
   .ob-logo__dot      { animation: none; }
   .ob-btn:active     { transform: none; }
 }
- 
+ /* Mobile responsiveness */
+@media (max-width: 768px) {
+
+  .ob-page {
+    padding: 16px;
+  }
+
+  .ob-nav {
+    padding: 12px 0;
+  }
+
+  .ob-logo {
+    font-size: 22px;
+  }
+
+  .ob-main {
+    width: 100%;
+  }
+
+  .ob-step__title {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .ob-eyebrow {
+    font-size: 13px;
+  }
+
+  .ob-question__text {
+    font-size: 20px;
+  }
+
+  /* Stack all option cards */
+  .ob-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .ob-card {
+    padding: 16px;
+    width: 100%;
+  }
+
+  .ob-card__label {
+    font-size: 16px;
+  }
+
+  .ob-card__sub {
+    font-size: 13px;
+  }
+
+
+  /* Timeline pills */
+  .ob-pill {
+    width: 100%;
+    padding: 14px;
+  }
+
+
+  /* Buttons */
+  .ob-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .ob-btn {
+    width: 100%;
+    padding: 15px;
+    font-size: 16px;
+  }
+
+
+  /* Progress bar */
+  .ob-progress__meta {
+    font-size: 13px;
+  }
+
+}
