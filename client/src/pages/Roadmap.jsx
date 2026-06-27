@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import '../styles/Roadmap.css';
 
 export default function Roadmap() {
-  const { userData } = useContext(UserContext);
-  console.log("ROADMAP USERDATA:", userData);
+  const { userData , setUserData} = useContext(UserContext);
+  
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,16 +16,29 @@ export default function Roadmap() {
       return;
     }
       try {
-       console.log("USER DATA:", userData);
+       
 
 const payload = {
-  role: userData.role,
-  timeline: userData.timeline,
-  skills: {
-    html: 4,
-    css: 4,
-    javascript: 3
+
+  role:userData.role,
+
+  companyType:userData.companyType,
+
+  timeline:userData.timeline,
+
+  buildLevel:userData.buildLevel,
+
+  learnStyle:userData.learnStyle,
+
+  struggle:userData.struggle,
+
+
+  skills:{
+    html:4,
+    css:4,
+    javascript:3
   }
+
 };
 
 console.log("PAYLOAD:", payload);  
@@ -50,6 +63,11 @@ console.log("PAYLOAD:", payload);
   roadmap: data.data.roadmap || data.data.steps || [],
   projects: data.data.projects || []
 });
+setUserData({
+  ...userData,
+  roadmap: data.data
+});
+
         setError(null);
       } catch (err) {
         setError(err.message || 'Failed to fetch roadmap');

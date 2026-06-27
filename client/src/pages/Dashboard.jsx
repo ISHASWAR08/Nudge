@@ -24,7 +24,7 @@ const MOCK_USER = {
 /* ── Map onboarding answers → dashboard shape ─────────────── */
 function buildUserFromContext(userData) {
   if (!userData || !userData.role) return null;
-
+  const aiReadiness = userData.roadmap?.readinessScore;
   const phaseMap = { learning: "learning", small: "building", shipped: "applying" };
   const phase = phaseMap[userData.buildLevel] || "learning";
   const nudgeActive = userData.learnStyle === "tutorials";
@@ -58,7 +58,10 @@ function buildUserFromContext(userData) {
   };
 
   const gaps = gapsByStruggle[userData.struggle] || MOCK_USER.gaps;
-  const readiness = Math.max(30, 100 - gaps.reduce((sum, g) => sum + g.weight, 0));
+  const readiness = aiReadiness || Math.max(
+  30,
+  100 - gaps.reduce((sum, g) => sum + g.weight, 0)
+);
 
   return {
     name: "You",
@@ -193,6 +196,7 @@ function SkillGaps({ gaps }) {
 export default function Dashboard() {
   const navigate = useNavigate();
   const { userData } = useUser();
+  
   const user = buildUserFromContext(userData) || MOCK_USER;
   const [nudgeDismissed, setNudgeDismissed] = useState(false);
 
