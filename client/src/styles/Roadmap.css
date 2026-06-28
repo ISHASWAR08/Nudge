@@ -1,19 +1,22 @@
-/* Color Variables */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap');
+
+/* Color Variables — Warm Compass */
 :root {
-  --bg-dark: #0F0F0F;
-  --surface: #1A1A1A;
-  --surface-hover: #222222;
-  --border: #2C2C2C;
-  --accent: #F5A623;
-  --accent-hover: #FFC04A;
-  --text: #F0EDE8;
-  --text-muted: #888480;
-  --white: #FFFFFF;
+  --bg: #fff9f2;
+  --surface: #ffffff;
+  --surface-hover: #fdf2ec;
+  --border: #f3e3d8;
+  --accent: #c26246;
+  --accent-hover: #ad5238;
+  --accent-dim: rgba(194, 98, 70, 0.08);
+  --text: #23170f;
+  --text-muted: #7a6a5d;
+  --white: #ffffff;
 
   /* Status Colors */
   --color-completed: #10B981;
-  --color-current: #FBBF24;
-  --color-locked: #6B7280;
+  --color-current: #c26246;
+  --color-locked: #c9bdb3;
 }
 
 * {
@@ -24,31 +27,85 @@
 
 html,
 body {
-  background-color: var(--bg-dark);
+  background-color: var(--bg);
   color: var(--text);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-  background-color: var(--bg-dark);
+  background-color: var(--bg);
+}
+
+/* ── TOP NAV (Dashboard / Roadmap / Coach) ───────── */
+.app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 48px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.app-nav__logo {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 21px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-nav__logo-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.app-nav__links {
+  display: flex;
+  gap: 8px;
+}
+
+.app-nav__link {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s, color .15s;
+}
+
+.app-nav__link:hover {
+  color: var(--text);
+}
+
+.app-nav__link--active {
+  background: var(--surface-hover);
+  color: var(--text);
+  font-weight: 600;
 }
 
 /* Container */
 .roadmap-container {
   min-height: 100vh;
-  background-color: var(--bg-dark);
-  padding: 40px 20px;
+  background-color: var(--bg);
+  padding: 40px 48px;
 }
 
 /* Header */
 .roadmap-header {
-  margin-bottom: 60px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 40px;
+  margin-bottom: 40px;
 }
 
 .header-content {
@@ -66,17 +123,23 @@ body {
 }
 
 .header-text h2 {
-  font-size: 42px;
-  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  font-size: 38px;
+  font-weight: 600;
   margin-bottom: 8px;
-  color: var(--white);
+  color: var(--text);
   letter-spacing: -0.5px;
 }
 
 .header-text p {
-  font-size: 18px;
+  font-size: 16px;
   color: var(--text-muted);
   font-weight: 400;
+}
+
+.header-text p strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 /* Main Content */
@@ -90,83 +153,85 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 40px;
-  margin-bottom: 40px;
+  padding: 32px;
+  margin-bottom: 24px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 16px rgba(35, 23, 15, 0.05);
 }
 
 .readiness-card:hover {
-  background: var(--surface-hover);
   border-color: var(--accent);
 }
 
 .readiness-card h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 30px;
-  color: var(--text);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 16px;
+  color: var(--text-muted);
 }
 
 .score-circle {
-  width: 200px;
-  height: 200px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-hover) 100%);
+  background: var(--surface);
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 30px;
-  box-shadow: 0 8px 32px rgba(245, 166, 35, 0.2);
+  margin: 0 0 16px;
 }
 
 .score-value {
-  font-size: 56px;
-  font-weight: 700;
-  color: var(--white);
+  font-family: 'Fraunces', serif;
+  font-size: 40px;
+  font-weight: 600;
+  color: var(--accent);
   line-height: 1;
 }
 
 .score-label {
-  font-size: 12px;
-  color: var(--white);
-  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-weight: 600;
 }
 
 .score-description {
-  text-align: center;
   color: var(--text-muted);
   font-size: 14px;
   line-height: 1.6;
 }
 
-/* Phase Card */
+/* Phase / Feature Card (used for "Open your roadmap" / "Talk to your coach") */
 .phase-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
-  padding: 40px;
-  margin-bottom: 40px;
+  padding: 32px;
+  margin-bottom: 24px;
   transition: all 0.3s ease;
+  box-shadow: 0 2px 16px rgba(35, 23, 15, 0.05);
+}
+
+.phase-card--accent {
+  background: var(--accent-dim);
+  border-color: rgba(194, 98, 70, 0.2);
 }
 
 .phase-card:hover {
-  background: var(--surface-hover);
   border-color: var(--accent);
 }
 
 .phase-card h3 {
-  font-size: 18px;
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 8px;
   color: var(--text);
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .phase-content {
@@ -176,8 +241,9 @@ body {
 }
 
 .phase-icon {
-  font-size: 64px;
+  font-size: 32px;
   flex-shrink: 0;
+  color: var(--accent);
 }
 
 .phase-details {
@@ -185,7 +251,7 @@ body {
 }
 
 .phase-name {
-  font-size: 28px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--accent);
   margin-bottom: 8px;
@@ -197,16 +263,47 @@ body {
   line-height: 1.6;
 }
 
+/* Quick-fact mini cards (Current level / Learning style / etc.) */
+.fact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.fact-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 2px 12px rgba(35, 23, 15, 0.05);
+}
+
+.fact-card__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.fact-card__value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
 /* Roadmap Section */
 .roadmap-section {
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 .roadmap-section h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 30px;
-  color: var(--text);
+  margin-bottom: 20px;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -224,13 +321,13 @@ body {
   padding: 20px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 1px 6px rgba(35, 23, 15, 0.04);
 }
 
 .roadmap-item:hover {
-  background: var(--surface-hover);
   border-color: var(--accent);
   transform: translateX(4px);
 }
@@ -258,14 +355,14 @@ body {
 }
 
 .status-current {
-  background: rgba(251, 191, 36, 0.1);
+  background: var(--accent-dim);
   color: var(--color-current);
   border: 2px solid var(--color-current);
   animation: pulse 2s infinite;
 }
 
 .status-locked {
-  background: rgba(107, 114, 128, 0.1);
+  background: rgba(201, 189, 179, 0.2);
   color: var(--color-locked);
   border: 2px solid var(--color-locked);
 }
@@ -290,14 +387,14 @@ body {
 
 /* Projects Section */
 .projects-section {
-  margin-bottom: 60px;
+  margin-bottom: 48px;
 }
 
 .projects-section h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
-  margin-bottom: 30px;
-  color: var(--text);
+  margin-bottom: 20px;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -311,23 +408,24 @@ body {
 .project-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 24px;
   text-align: center;
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 1px 6px rgba(35, 23, 15, 0.04);
 }
 
 .project-card:hover {
-  background: var(--surface-hover);
   border-color: var(--accent);
   transform: translateY(-4px);
-  box-shadow: 0 16px 32px rgba(245, 166, 35, 0.1);
+  box-shadow: 0 16px 32px rgba(194, 98, 70, 0.1);
 }
 
 .project-icon {
-  font-size: 40px;
+  font-size: 36px;
   margin-bottom: 16px;
+  color: var(--accent);
 }
 
 .project-card h4 {
@@ -341,6 +439,134 @@ body {
   font-size: 13px;
   color: var(--text-muted);
   line-height: 1.6;
+}
+
+/* ── Empty state (roadmap "No roadmap yet") ─────── */
+.empty-state {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 80px 40px;
+  text-align: center;
+  box-shadow: 0 2px 16px rgba(35, 23, 15, 0.05);
+}
+
+.empty-state__icon {
+  font-size: 28px;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  font-size: 15px;
+  color: var(--text-muted);
+}
+
+/* ── Coach chat ──────────────────────────────────── */
+.coach-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(35, 23, 15, 0.05);
+  padding: 64px 40px;
+  text-align: center;
+}
+
+.coach-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 24px;
+}
+
+.coach-card h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.coach-card > p {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.coach-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.coach-suggestion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+
+.coach-suggestion:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.coach-input-row {
+  margin-top: 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.coach-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  background: transparent;
+  resize: none;
+}
+
+.coach-input::placeholder { color: var(--text-muted); }
+
+.coach-send {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--text);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
 /* Loading Screen */
@@ -385,8 +611,9 @@ body {
 }
 
 .error-screen h2 {
-  font-size: 32px;
-  font-weight: 700;
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 600;
   color: var(--text);
   margin-bottom: 12px;
 }
@@ -400,10 +627,10 @@ body {
 
 .error-screen button {
   background: var(--accent);
-  color: var(--bg-dark);
+  color: var(--white);
   border: none;
   padding: 12px 32px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -412,178 +639,53 @@ body {
 
 .error-screen button:hover {
   background: var(--accent-hover);
-  transform: scale(1.05);
 }
 
 /* Pulse Animation */
 @keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
-  .roadmap-container {
-    padding: 24px 16px;
-  }
-
-  .roadmap-header {
-    margin-bottom: 40px;
-    padding-bottom: 24px;
-  }
-
-  .logo-text {
-    font-size: 20px;
-  }
-
-  .header-text h2 {
-    font-size: 28px;
-  }
-
-  .header-text p {
-    font-size: 14px;
-  }
-
-  .readiness-card,
-  .phase-card {
-    padding: 24px;
-  }
-
-  .score-circle {
-    width: 150px;
-    height: 150px;
-  }
-
-  .score-value {
-    font-size: 42px;
-  }
-
-  .phase-content {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .phase-icon {
-    font-size: 48px;
-  }
-
-  .roadmap-item {
-    padding: 16px;
-  }
-
-  .projects-grid {
-    grid-template-columns: 1fr;
-  }
+  .roadmap-container { padding: 24px 16px; }
+  .app-nav { padding: 16px 20px; }
+  .roadmap-header { margin-bottom: 28px; }
+  .header-text h2 { font-size: 26px; }
+  .header-text p { font-size: 14px; }
+  .readiness-card, .phase-card { padding: 22px; }
+  .fact-grid { grid-template-columns: 1fr; }
+  .roadmap-item { padding: 16px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .coach-card { padding: 40px 20px; }
+  .coach-suggestions { flex-direction: column; }
 }
 
 @media (max-width: 480px) {
-  .roadmap-container {
-    padding: 16px;
-  }
-
-  .header-text h2 {
-    font-size: 24px;
-  }
-
-  .roadmap-main {
-    padding: 0;
-  }
-
-  .readiness-card,
-  .phase-card {
-    padding: 20px;
-  }
-
-  .score-circle {
-    width: 120px;
-    height: 120px;
-  }
-
-  .score-value {
-    font-size: 32px;
-  }
-
-  .score-label {
-    font-size: 10px;
-  }
-
-  .phase-name {
-    font-size: 22px;
-  }
-
-  .roadmap-section h3,
-  .projects-section h3 {
-    font-size: 16px;
-    margin-bottom: 20px;
-  }
-
-  .item-name {
-    font-size: 14px;
-  }
-
-  .project-card h4 {
-    font-size: 14px;
-  }
-
-  .project-card p {
-    font-size: 12px;
-  }
+  .roadmap-container { padding: 16px; }
+  .header-text h2 { font-size: 22px; }
+  .readiness-card, .phase-card { padding: 18px; }
+  .score-value { font-size: 32px; }
 }
-@media (max-width: 768px) {
 
-  .roadmap-container {
-    padding: 12px;
-  }
+.milestone-btn {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: var(--amber);
+  color: black;
+  font-weight: 600;
+}
 
+.milestone-btn:hover {
+  opacity: 0.85;
+}
 
-  .header-content {
-    flex-direction: column;
-    text-align: center;
-    gap: 10px;
-  }
-
-
-  .header-text h2 {
-    font-size: 24px;
-  }
-
-
-  .readiness-card,
-  .phase-card,
-  .roadmap-section,
-  .projects-section {
-    padding: 18px;
-    width: 100%;
-  }
-
-
-  .score-circle {
-    margin: 20px auto;
-  }
-
-
-  .roadmap-timeline {
-    padding-left: 0;
-  }
-
-
-  .roadmap-item {
-    width: 100%;
-  }
-
-
-  .projects-grid {
-    grid-template-columns: 1fr !important;
-  }
-
-
-  .project-card {
-    width: 100%;
-  }
-
+.locked-text {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 8px;
 }

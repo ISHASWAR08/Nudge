@@ -9,7 +9,7 @@ export default function Roadmap() {
   const [roadmapData, setRoadmapData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [started, setStarted] = useState(false);
   useEffect(() => {
     const fetchRoadmap = async () => {
       if (!userData.role) {
@@ -78,8 +78,21 @@ setUserData({
     };
 
     fetchRoadmap();
-  }, [userData]);
+  }, []);
+const completeMilestone = (index) => {
+  const updated = [...roadmapData.roadmap];
 
+  updated[index].status = "completed";
+
+  if (updated[index + 1]) {
+    updated[index + 1].status = "current";
+  }
+
+  setRoadmapData({
+    ...roadmapData,
+    roadmap: updated
+  });
+};
   if (loading) {
     return (
       <div className="roadmap-container">
@@ -185,18 +198,51 @@ setUserData({
                 <div className={`item-status status-${step.status}`}>
                   {getStatusIcon(step.status)}
                 </div>
-                <div className="item-content">
-                  <p className="item-name">{step.item}</p>
-                  <p className="item-status-text">
-                    {step.status === 'completed'
-                      ? 'Completed'
-                      : step.status === 'current'
-                      ? 'Current'
-                      : 'Locked'}
-                  </p>
-                </div>
-              </div>
-            ))}
+                 <div className="item-content">
+
+      <p className="item-name">
+        {step.item}
+      </p>
+
+      <p className="item-status-text">
+        {step.status === "completed" || step.status === "Completed"
+  ? "Completed"
+  : step.status === "current" || step.status === "In Progress"
+  ? "Current milestone"
+  : "Locked"}
+      </p>
+
+
+      {(step.status === "current" || step.status === "In Progress") && (
+  <>
+    {!started ? (
+      <button
+        className="milestone-btn"
+        onClick={() => setStarted(true)}
+      >
+        Start Milestone
+      </button>
+    ) : (
+      <button
+        className="milestone-btn"
+        onClick={() => completeMilestone(index)}
+      >
+        Mark as Completed ✓
+      </button>
+    )}
+  </>
+)}
+
+{(step.status === "locked" || step.status === "Not Started") && (
+  <p className="locked-text">
+    Complete previous milestone to unlock
+  </p>
+)}
+
+    </div>
+
+  </div>
+))}
           </div>
         </section>
 
